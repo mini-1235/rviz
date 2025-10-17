@@ -83,7 +83,12 @@ private:
   rviz_common::ViewportMouseEvent generateMouseEvent(
     int x, int y, QMouseEvent::Type type, Qt::MouseButton button, Qt::KeyboardModifiers modifiers)
   {
+    #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     auto mouseEvent = new QMouseEvent(type, QPointF(x, y), button, button, modifiers);
+    #else
+    auto mouseEvent = new QMouseEvent(type, QPointF(x, y), QPointF(x, y), button, button,
+      modifiers);
+    #endif
     return {render_panel_.get(), mouseEvent, x, y};
   }
 
